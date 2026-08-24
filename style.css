@@ -1,0 +1,401 @@
+/* ==========================================================================
+   VENUO — style.css
+   Yeh file poori site ki STYLING (colors, fonts, spacing, layout) handle
+   karti hai. Har section ko comment ke saath divide kiya hai taaki
+   aasani se samajh aaye ki kaunsa CSS kis part ke liye hai.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1) COLOR & DESIGN TOKENS
+   Yahan hum saare colors ko variables (--ink, --gold, etc.) mein store
+   karte hain. Isse fayda yeh hai ki agar kabhi color change karna ho,
+   to sirf yahan ek jagah badalna padega, poori site mein automatically
+   update ho jayega.
+   -------------------------------------------------------------------------- */
+:root{
+  --ink:#14172B;        /* dark navy - header, footer, hero background */
+  --ink-soft:#1E2240;
+  --gold:#E8B94E;        /* marquee gold - main accent color */
+  --paper:#F6F1E4;        /* cream/off-white - page background */
+  --paper-dim:#EDE6D3;     /* thoda darker cream - cards ke andar */
+  --stamp:#C1443C;         /* red accent - buttons/highlights ke liye */
+  --slate:#2B2E3D;         /* main text color */
+  --slate-soft:#666a80;    /* secondary/muted text color */
+  --line: rgba(20,23,43,0.14); /* light border color */
+  --radius: 2px;
+}
+
+/* Reset: browser default margin/padding hata rahe hain taaki design
+   consistent rahe har browser mein */
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;} /* nav link click karne par smooth scroll */
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--slate);
+  font-family:'Work Sans', sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* Headings ke liye Fraunces serif font - isse "ticket/vintage" look milta hai */
+h1,h2,h3,.display{
+  font-family:'Fraunces', serif;
+  font-weight:600;
+  letter-spacing:-0.01em;
+  margin:0;
+}
+.mono{ font-family:'Space Mono', monospace; } /* ticket numbers, times ke liye */
+
+a{color:inherit;}
+img,svg{display:block;max-width:100%;}
+button{font-family:inherit;cursor:pointer;}
+
+/* Accessibility: jab koi keyboard se Tab dabakar navigate kare, tab
+   focus wale element ke around ek visible outline dikhna chahiye */
+:focus-visible{
+  outline:3px solid var(--stamp);
+  outline-offset:2px;
+}
+
+.wrap{ max-width:1180px; margin:0 auto; padding:0 28px; } /* content ko center + max-width dena */
+
+/* --------------------------------------------------------------------------
+   2) SKIP LINK (accessibility feature)
+   Screen-reader/keyboard users ke liye - Tab dabate hi ek hidden link
+   dikhta hai jisse woh seedha "main content" pe jump kar sakte hain,
+   nav menu baar baar Tab karke skip karne ki zaroorat nahi.
+   -------------------------------------------------------------------------- */
+.skip-link{
+  position:absolute; left:-999px; top:0; /* by default screen se bahar chhupa hua */
+  background:var(--gold); color:var(--ink); padding:10px 16px;
+  z-index:200; font-weight:600;
+}
+.skip-link:focus{ left:12px; top:12px; } /* focus milte hi visible ho jaata hai */
+
+/* --------------------------------------------------------------------------
+   3) HEADER / NAVBAR
+   -------------------------------------------------------------------------- */
+header.site{
+  background:var(--ink);
+  color:var(--paper);
+  position:sticky; top:0; z-index:100; /* scroll karne par bhi header upar chipka rahega */
+  border-bottom:1px solid rgba(246,241,228,0.14);
+}
+.nav-row{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 28px;
+}
+.logo{
+  display:flex; align-items:baseline; gap:8px;
+  font-size:1.35rem; color:var(--paper); text-decoration:none;
+}
+.logo .dot{ color:var(--gold); } /* "ora" part gold color mein */
+nav.primary{ display:flex; gap:30px; }
+nav.primary a{
+  text-decoration:none; color:var(--paper);
+  font-size:0.92rem; letter-spacing:0.02em;
+  padding:6px 2px; border-bottom:1px solid transparent;
+  transition:border-color .15s ease;
+}
+nav.primary a:hover{ border-color:var(--gold); }
+.nav-actions{ display:flex; align-items:center; gap:14px; }
+
+/* Buttons - saare buttons ke liye common style + variants */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding:11px 20px;
+  border-radius:var(--radius);
+  border:1px solid transparent;
+  font-size:0.88rem; font-weight:600; letter-spacing:0.01em;
+  text-decoration:none;
+  transition: transform .12s ease;
+}
+.btn:active{ transform: translateY(1px); } /* click karne par thoda "press" jaisa effect */
+.btn-gold{ background:var(--gold); color:var(--ink); }
+.btn-gold:hover{ background:#f3cb6c; }
+.btn-outline{ background:transparent; color:var(--paper); border-color:rgba(246,241,228,0.4); }
+.btn-outline:hover{ border-color:var(--gold); color:var(--gold); }
+.btn-stamp{ background:var(--stamp); color:var(--paper); }
+.btn-stamp:hover{ background:#d9584f; }
+
+/* Mobile menu (hamburger) button - default hidden, sirf chhoti screen par dikhega */
+.hamburger{
+  display:none; background:none; border:1px solid rgba(246,241,228,.4);
+  color:var(--paper); padding:8px 10px; border-radius:var(--radius);
+}
+
+/* --------------------------------------------------------------------------
+   4) HERO SECTION (sabse upar wala bada intro section)
+   -------------------------------------------------------------------------- */
+.hero{
+  background:
+    radial-gradient(circle at 14% 20%, rgba(232,185,78,0.10), transparent 45%),
+    var(--ink);
+  color:var(--paper);
+  padding:76px 0 0;
+  overflow:hidden;
+  position:relative;
+}
+.hero-grid{
+  display:grid; grid-template-columns: 1.1fr 0.9fr; gap:48px; align-items:center;
+  padding-bottom:70px;
+}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:10px;
+  font-family:'Space Mono',monospace; font-size:0.72rem;
+  letter-spacing:0.14em; text-transform:uppercase; color:var(--gold);
+  margin-bottom:22px;
+}
+.eyebrow::before{ content:""; width:26px; height:1px; background:var(--gold); }
+.hero h1{
+  font-size:clamp(2.4rem, 4.6vw, 3.9rem); /* screen size ke hisaab se font auto adjust hota hai */
+  line-height:1.03;
+  color:var(--paper);
+}
+.hero h1 em{ font-style:italic; color:var(--gold); font-weight:500; }
+.hero p.lede{
+  font-size:1.08rem; color:rgba(246,241,228,0.72);
+  max-width:46ch; margin:22px 0 32px; line-height:1.6;
+}
+.hero-ctas{ display:flex; gap:14px; flex-wrap:wrap; }
+
+/* Hero ke right side wala "ticket" illustration card */
+.ticket-hero{
+  background:var(--paper); color:var(--slate);
+  border-radius:6px;
+  padding:26px 26px 22px;
+  box-shadow:0 30px 60px rgba(0,0,0,0.35);
+  transform:rotate(2.5deg); /* thoda tilt taaki ek real ticket jaisa feel aaye */
+  position:relative;
+}
+/* left-right ke round notches - real event ticket mein jo perforated
+   circle cutouts hote hain, unka illusion */
+.ticket-hero::before, .ticket-hero::after{
+  content:""; position:absolute; width:26px; height:26px; background:var(--ink);
+  border-radius:50%; top:50%; transform:translateY(-50%);
+}
+.ticket-hero::before{ left:-13px; }
+.ticket-hero::after{ right:-13px; }
+.ticket-hero .top-row{ display:flex; justify-content:space-between; align-items:flex-start; }
+.ticket-hero .admit{
+  font-family:'Space Mono',monospace; font-size:0.68rem; letter-spacing:.12em;
+  color:var(--stamp); border:1px solid var(--stamp); padding:4px 8px; border-radius:2px;
+  transform:rotate(-4deg);
+}
+.ticket-hero h3{ font-size:1.55rem; margin-top:14px; }
+.ticket-hero .sub{ color:var(--slate-soft); font-size:0.9rem; margin-top:4px; }
+.tear{ border-top:2px dashed var(--line); margin:20px 0; position:relative; } /* ticket ka "tear here" perforated line */
+.ticket-hero .meta{ display:flex; justify-content:space-between; font-family:'Space Mono',monospace; font-size:0.78rem; color:var(--slate-soft); }
+.ticket-hero .meta strong{ display:block; color:var(--slate); font-size:0.92rem; font-family:'Work Sans',sans-serif; font-weight:600; }
+
+/* Stats strip - hero ke neeche wala gold color ka number band */
+.stats-strip{ background:var(--gold); color:var(--ink); border-top:1px solid rgba(20,23,43,0.15); }
+.stats-strip .wrap{ display:flex; flex-wrap:wrap; gap:0; padding:0; }
+.stat{ flex:1 1 200px; padding:20px 28px; border-left:1px solid rgba(20,23,43,0.18); }
+.stat:first-child{ border-left:none; padding-left:0; }
+.stat .num{ font-family:'Fraunces',serif; font-size:1.9rem; font-weight:600; }
+.stat .label{ font-size:0.78rem; letter-spacing:0.03em; opacity:0.85; }
+
+/* --------------------------------------------------------------------------
+   5) GENERIC SECTION SPACING (har <section> tag pe apply hota hai)
+   -------------------------------------------------------------------------- */
+section{ padding:88px 0; }
+.section-head{
+  display:flex; justify-content:space-between; align-items:flex-end;
+  gap:24px; margin-bottom:40px; flex-wrap:wrap;
+}
+.section-head .eyebrow{ color:var(--stamp); }
+.section-head h2{ font-size:clamp(1.7rem,3vw,2.4rem); }
+.section-head p{ color:var(--slate-soft); max-width:44ch; }
+
+/* --------------------------------------------------------------------------
+   6) VENUE FILTER BAR (search + dropdowns)
+   -------------------------------------------------------------------------- */
+.filters{
+  display:flex; flex-wrap:wrap; gap:12px; margin-bottom:34px;
+  background:var(--paper-dim); padding:18px; border:1px solid var(--line); border-radius:4px;
+}
+.field{ display:flex; flex-direction:column; gap:6px; flex:1 1 160px; }
+.field label{ font-size:0.74rem; letter-spacing:0.05em; text-transform:uppercase; color:var(--slate-soft); }
+.field input, .field select{
+  padding:10px 12px; border:1px solid var(--line); border-radius:2px;
+  background:#fff; font-family:inherit; font-size:0.92rem; color:var(--slate);
+}
+.filters .field.grow{ flex:2 1 220px; }
+#resultCount{ font-family:'Space Mono',monospace; font-size:0.8rem; color:var(--slate-soft); margin-bottom:20px; }
+
+/* --------------------------------------------------------------------------
+   7) VENUE CARDS (ticket-stub style cards jo JS se dynamically banti hain)
+   -------------------------------------------------------------------------- */
+.venue-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:26px; }
+.venue-card{
+  background:#fff; border:1px solid var(--line); border-radius:4px;
+  overflow:hidden; display:flex; flex-direction:column;
+  transition: transform .16s ease, box-shadow .16s ease;
+}
+.venue-card:hover{ transform:translateY(-4px); box-shadow:0 18px 30px rgba(20,23,43,0.12); } /* hover par card thoda upar uthta hai */
+.venue-art{ height:150px; position:relative; overflow:hidden; } /* venue "photo" area - actually CSS gradient hai, real image nahi */
+.venue-art .stamp{
+  position:absolute; top:12px; right:12px;
+  font-family:'Space Mono',monospace; font-size:0.65rem; letter-spacing:.1em;
+  background:rgba(20,23,43,0.75); color:var(--gold);
+  padding:4px 8px; border-radius:2px; text-transform:uppercase;
+}
+.venue-body{ padding:18px 20px 20px; display:flex; flex-direction:column; gap:10px; flex:1; }
+.venue-body h3{ font-size:1.18rem; }
+.venue-city{ color:var(--slate-soft); font-size:0.86rem; }
+.venue-tags{ display:flex; gap:8px; flex-wrap:wrap; }
+.tag{
+  font-family:'Space Mono',monospace; font-size:0.68rem; letter-spacing:.04em;
+  background:var(--paper-dim); border:1px solid var(--line); color:var(--slate-soft);
+  padding:3px 8px; border-radius:20px;
+}
+/* dashed divider jo card ke andar "ticket tear line" jaisa dikhta hai,
+   left-right ke chhote circle notches ke saath */
+.ticket-divider{ border-top:2px dashed var(--line); margin:4px 0; position:relative; }
+.ticket-divider::before, .ticket-divider::after{
+  content:""; position:absolute; width:14px; height:14px; background:var(--paper);
+  border-radius:50%; top:-7px;
+}
+.ticket-divider::before{ left:-20px; }
+.ticket-divider::after{ right:-20px; }
+.venue-foot{ display:flex; justify-content:space-between; align-items:center; margin-top:auto; }
+.price{ font-family:'Space Mono',monospace; font-size:0.85rem; }
+.price strong{ font-size:1.05rem; }
+.view-btn{
+  background:none; border:1px solid var(--slate); color:var(--slate);
+  padding:8px 14px; border-radius:2px; font-size:0.82rem; font-weight:600;
+}
+.view-btn:hover{ background:var(--ink); border-color:var(--ink); color:var(--paper); }
+
+/* Jab filter se koi venue match na ho, tab yeh empty message dikhta hai */
+.empty-state{
+  grid-column:1/-1; text-align:center; padding:50px 20px;
+  border:1px dashed var(--line); border-radius:4px; color:var(--slate-soft);
+}
+
+/* --------------------------------------------------------------------------
+   8) "HOW IT WORKS" SECTION (3-step process, dark background)
+   -------------------------------------------------------------------------- */
+.how-strip{ background:var(--ink); color:var(--paper); }
+.how-strip .section-head p{ color:rgba(246,241,228,0.65); }
+.how-strip .eyebrow{ color:var(--gold); }
+.how-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:0; border-top:1px solid rgba(246,241,228,0.15); }
+.how-step{ padding:32px 26px; border-right:1px solid rgba(246,241,228,0.15); }
+.how-step:last-child{ border-right:none; }
+.how-step .stub{ font-family:'Space Mono',monospace; color:var(--gold); font-size:0.8rem; margin-bottom:14px; }
+.how-step h3{ font-size:1.15rem; color:var(--paper); margin-bottom:8px; }
+.how-step p{ color:rgba(246,241,228,0.68); font-size:0.92rem; line-height:1.6; margin:0; }
+
+/* --------------------------------------------------------------------------
+   9) ORGANIZE / EVENT PLANNER SECTION (form + list, do columns mein)
+   -------------------------------------------------------------------------- */
+.organize-wrap{ display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; }
+form.builder{
+  background:#fff; border:1px solid var(--line); border-radius:4px; padding:26px;
+  display:flex; flex-direction:column; gap:16px;
+}
+form.builder .row{ display:grid; grid-template-columns:1fr 1fr; gap:14px; } /* date + guests ek row mein side by side */
+form.builder .field label{ margin-bottom:2px; }
+form.builder input, form.builder select, form.builder textarea{
+  width:100%; padding:11px 12px; border:1px solid var(--line); border-radius:2px;
+  font-family:inherit; font-size:0.92rem; color:var(--slate); background:var(--paper);
+}
+form.builder textarea{ resize:vertical; min-height:70px; }
+.builder-submit{ align-self:flex-start; }
+#formStatus{ font-size:0.85rem; color:var(--stamp); min-height:1.2em; } /* form ke success/error message ke liye reserved space */
+
+.your-events h3{ font-size:1.05rem; margin-bottom:14px; }
+#eventList{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px; }
+#eventList li{
+  background:var(--paper-dim); border:1px solid var(--line); border-radius:4px;
+  padding:14px 16px; display:flex; justify-content:space-between; gap:12px; align-items:center;
+}
+#eventList .ev-name{ font-weight:600; }
+#eventList .ev-meta{ font-family:'Space Mono',monospace; font-size:0.76rem; color:var(--slate-soft); }
+#eventList button.remove{
+  background:none; border:none; color:var(--stamp); font-size:0.78rem; font-weight:600;
+  text-decoration:underline; padding:4px;
+}
+.no-events{ color:var(--slate-soft); font-size:0.88rem; border:1px dashed var(--line); padding:22px; text-align:center; border-radius:4px; }
+
+/* --------------------------------------------------------------------------
+   10) FOOTER
+   -------------------------------------------------------------------------- */
+footer{ background:var(--ink); color:rgba(246,241,228,0.6); padding:44px 0 30px; }
+footer .wrap{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px; align-items:center; }
+footer .logo{ color:var(--paper); }
+footer small{ font-size:0.78rem; }
+
+/* --------------------------------------------------------------------------
+   11) MODAL (venue details wala popup box)
+   -------------------------------------------------------------------------- */
+.modal-backdrop{
+  position:fixed; inset:0; background:rgba(20,23,43,0.68); /* poori screen ko dark overlay se dhak dete hain */
+  display:none; align-items:center; justify-content:center; z-index:300; padding:20px;
+}
+.modal-backdrop.open{ display:flex; } /* JS jab "open" class add karta hai, tabhi modal dikhta hai */
+.modal{
+  background:var(--paper); max-width:520px; width:100%; border-radius:6px;
+  position:relative; padding:30px 30px 28px; max-height:88vh; overflow-y:auto;
+  box-shadow:0 40px 80px rgba(0,0,0,0.4);
+}
+.modal-close{
+  position:absolute; top:14px; right:14px; background:none; border:1px solid var(--line);
+  width:34px; height:34px; border-radius:50%; font-size:1rem; line-height:1;
+}
+.modal .admit-stamp{
+  display:inline-block; font-family:'Space Mono',monospace; font-size:0.7rem; letter-spacing:.12em;
+  color:var(--stamp); border:1px solid var(--stamp); padding:4px 10px; border-radius:2px; margin-bottom:14px;
+}
+.modal h2{ font-size:1.6rem; margin-bottom:6px; }
+.modal .modal-city{ color:var(--slate-soft); margin-bottom:18px; }
+.modal-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px 22px; margin:18px 0; }
+.modal-grid .k{ font-family:'Space Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:.05em; color:var(--slate-soft); }
+.modal-grid .v{ font-weight:600; font-size:0.95rem; }
+.modal p.desc{ line-height:1.65; color:var(--slate); font-size:0.94rem; }
+.modal-actions{ display:flex; gap:12px; margin-top:22px; }
+.confirm-msg{
+  margin-top:14px; background:var(--paper-dim); border:1px solid var(--line);
+  padding:12px 14px; border-radius:4px; font-size:0.88rem; display:none; /* "Reserve" click karne par yeh dikhta hai */
+}
+.confirm-msg.show{ display:block; }
+
+/* Jinke system mein "reduce motion" setting on hai (motion-sensitive users),
+   unke liye animations off kar dete hain */
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  .venue-card, .btn{ transition:none; }
+}
+
+/* --------------------------------------------------------------------------
+   12) RESPONSIVE DESIGN (mobile/tablet ke liye adjustments)
+   Yeh sabse important part hai "responsive across devices" wale
+   requirement ke liye. Screen chhoti hote hi layout badal jaata hai.
+   -------------------------------------------------------------------------- */
+
+/* Tablet aur chhoti screens (<= 980px) */
+@media (max-width: 980px){
+  .hero-grid{ grid-template-columns:1fr; }      /* hero ab 2 column ki jagah 1 column ho jaata hai */
+  .ticket-hero{ transform:none; max-width:420px; }
+  .venue-grid{ grid-template-columns:repeat(2,1fr); } /* 3 cards/row -> 2 cards/row */
+  .how-grid{ grid-template-columns:1fr; }
+  .how-step{ border-right:none; border-bottom:1px solid rgba(246,241,228,0.15); }
+  .organize-wrap{ grid-template-columns:1fr; }
+}
+
+/* Mobile screens (<= 680px) */
+@media (max-width: 680px){
+  nav.primary, .nav-actions .btn-outline{ display:none; }   /* normal nav chhupa dete hain */
+  .hamburger{ display:inline-flex; }                        /* hamburger button dikhate hain */
+  .nav-row.menu-open nav.primary{                            /* hamburger click hote hi menu open */
+    display:flex; position:absolute; top:100%; left:0; right:0;
+    flex-direction:column; background:var(--ink); padding:18px 28px; gap:16px;
+    border-bottom:1px solid rgba(246,241,228,0.14);
+  }
+  .venue-grid{ grid-template-columns:1fr; }   /* mobile par ek hi column mein cards */
+  .stat{ flex:1 1 50%; border-left:none; border-top:1px solid rgba(20,23,43,0.18); }
+  .stat:nth-child(odd){ border-left:none; }
+  form.builder .row{ grid-template-columns:1fr; } /* date & guests fields ab stack ho jaate hain */
+  .modal-grid{ grid-template-columns:1fr; }
+}

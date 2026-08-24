@@ -1,0 +1,263 @@
+<!--
+  ============================================================================
+  VENUO — index.html
+  Yeh sirf STRUCTURE/CONTENT ki file hai (design nahi, logic nahi).
+  - Styling ke liye  -> style.css  dekho
+  - Behaviour/JS ke liye -> script.js dekho
+  Neeche har bade section ke upar ek comment hai jo bataata hai
+  woh section kya kaam karta hai.
+  ============================================================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- mobile par sahi zoom/scaling ke liye zaroori -->
+<title>Venuo — Find the room. Run the room.</title>
+
+<!-- Google Fonts: teen fonts load ho rahe hain -
+     Fraunces (headings), Work Sans (body text), Space Mono (numbers/labels) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Work+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- Poori styling is external file mein hai -->
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Accessibility: keyboard users seedha "main content" par jump kar sakte hain -->
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- ====================== HEADER / NAVBAR ====================== -->
+<header class="site">
+  <div class="nav-row" id="navRow">
+    <a href="#main" class="logo display">Venu<span class="dot">o</span></a>
+    <nav class="primary" aria-label="Primary">
+      <a href="#venues">Venues</a>
+      <a href="#how">How it works</a>
+      <a href="#organize">Organize</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="#venues" class="btn btn-outline">Browse venues</a>
+      <a href="#organize" class="btn btn-gold">Start an event</a>
+      <button class="hamburger" id="hamburgerBtn" aria-expanded="false" aria-controls="navRow" aria-label="Toggle menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ====================== HERO SECTION ======================
+       Yeh page ka sabse pehla bada section hai - headline, tagline,
+       2 CTA buttons, aur ek "ticket" design wala illustration.
+       Neeche stats-strip (numbers) bhi isi section ke andar hai. -->
+  <section class="hero" aria-labelledby="hero-heading">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Venue booking &amp; event planning</p>
+        <h1 id="hero-heading">Find the room.<br><em>Run the room.</em></h1>
+        <p class="lede">Venuo is where organizers browse real venues, compare the details that actually matter, and put together an event without twelve browser tabs open.</p>
+        <div class="hero-ctas">
+          <a href="#venues" class="btn btn-gold">Browse venues</a>
+          <a href="#organize" class="btn btn-outline">Plan an event</a>
+        </div>
+      </div>
+      <div>
+        <div class="ticket-hero">
+          <div class="top-row">
+            <div>
+              <p class="mono" style="font-size:.7rem;letter-spacing:.1em;color:var(--slate-soft);">VENUO · VENUE PASS</p>
+            </div>
+            <span class="admit">ADMIT ONE</span>
+          </div>
+          <h3>The Glasshouse Loft</h3>
+          <p class="sub">Industrial event space · Brooklyn, NY</p>
+          <div class="tear"></div>
+          <div class="meta">
+            <div><strong>240</strong>capacity</div>
+            <div><strong>Sat, Oct 3</strong>date</div>
+            <div><strong>$1,450</strong>day rate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="stats-strip">
+      <div class="wrap">
+        <div class="stat"><div class="num">128</div><div class="label">Venues listed</div></div>
+        <div class="stat"><div class="num">19</div><div class="label">Cities covered</div></div>
+        <div class="stat"><div class="num">4.8/5</div><div class="label">Avg. organizer rating</div></div>
+        <div class="stat"><div class="num">2,300+</div><div class="label">Events hosted</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== VENUES SECTION ======================
+       Filter bar (search + dropdowns) + venue cards ka grid.
+       IMPORTANT: #venueGrid khaali <div> hai yahan — saare venue
+       cards script.js dynamically JavaScript se banata hai. -->
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Browse</p>
+          <h2 id="venues-heading">Venues worth the trip</h2>
+          <p>Filter by city, space type, or how many people you need to fit. Every listing shows the numbers up front.</p>
+        </div>
+      </div>
+
+      <form class="filters" id="filterForm" role="search" aria-label="Filter venues">
+        <div class="field grow">
+          <label for="searchInput">Search</label>
+          <input type="text" id="searchInput" placeholder="Search venue or city…" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="cityFilter">City</label>
+          <select id="cityFilter">
+            <option value="">All cities</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="typeFilter">Space type</label>
+          <select id="typeFilter">
+            <option value="">All types</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="capFilter">Min. capacity</label>
+          <select id="capFilter">
+            <option value="0">Any size</option>
+            <option value="50">50+</option>
+            <option value="100">100+</option>
+            <option value="200">200+</option>
+            <option value="400">400+</option>
+          </select>
+        </div>
+      </form>
+
+      <p id="resultCount" role="status" aria-live="polite"></p>
+
+      <div class="venue-grid" id="venueGrid"></div>
+    </div>
+  </section>
+
+  <!-- ====================== HOW IT WORKS SECTION ======================
+       Static 3-step explanation - is section mein koi JS nahi lagta,
+       yeh sirf HTML+CSS hai. -->
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Process</p>
+          <h2 id="how-heading">Three steps, no back-and-forth</h2>
+          <p>Venuo keeps the booking and the planning in the same place.</p>
+        </div>
+      </div>
+    </div>
+    <div class="how-grid">
+      <div class="how-step">
+        <p class="stub mono">01 · Browse</p>
+        <h3>Compare venues side by side</h3>
+        <p>Filter by city, capacity and type, then open a listing to see the full breakdown — layout, amenities, and rate.</p>
+      </div>
+      <div class="how-step">
+        <p class="stub mono">02 · Hold</p>
+        <h3>Lock in your date</h3>
+        <p>Reserve directly from the venue's detail card. No quote requests, no waiting on an email back.</p>
+      </div>
+      <div class="how-step">
+        <p class="stub mono">03 · Organize</p>
+        <h3>Build the event around it</h3>
+        <p>Use the planner below to attach a title, date and guest count to your booked venue, and track everything in one list.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== ORGANIZE / PLANNER SECTION ======================
+       Left side: form (#eventForm) jahan user event details bharta hai.
+       Right side: #eventList - jo events add kiye jaate hain woh yahan
+       JavaScript se list mein dikhte hain. -->
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Organize</p>
+          <h2 id="organize-heading">Put your event together</h2>
+          <p>Add the details once — Venuo keeps a running list so nothing gets planned twice.</p>
+        </div>
+      </div>
+
+      <div class="organize-wrap">
+        <form class="builder" id="eventForm" novalidate>
+          <div class="field">
+            <label for="evName">Event name</label>
+            <input type="text" id="evName" name="evName" required placeholder="e.g. Product launch mixer">
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="evDate">Date</label>
+              <input type="date" id="evDate" name="evDate" required>
+            </div>
+            <div class="field">
+              <label for="evGuests">Expected guests</label>
+              <input type="number" id="evGuests" name="evGuests" min="1" required placeholder="120">
+            </div>
+          </div>
+          <div class="field">
+            <label for="evVenue">Venue</label>
+            <select id="evVenue" name="evVenue" required>
+              <option value="">Select a venue…</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="evNotes">Notes</label>
+            <textarea id="evNotes" name="evNotes" placeholder="Catering, AV needs, load-in time…"></textarea>
+          </div>
+          <button type="submit" class="btn btn-stamp builder-submit">Add to my events</button>
+          <p id="formStatus" aria-live="polite"></p>
+        </form>
+
+        <div class="your-events">
+          <h3>Your events</h3>
+          <ul id="eventList"></ul>
+          <p class="no-events" id="noEvents">Nothing planned yet — add your first event and it'll show up here.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <a href="#main" class="logo display">Venu<span class="dot" style="color:var(--gold);">o</span></a>
+    <small>Built with HTML, CSS &amp; JavaScript · A demo event &amp; venue browsing platform.</small>
+  </div>
+</footer>
+
+<!-- ====================== MODAL (venue details popup) ======================
+     Yeh poora box by-default HIDDEN rehta hai (CSS: display:none).
+     Jab user kisi venue card ka "View details" button dabata hai,
+     script.js is box ko data se bhar kar "open" class add karta hai,
+     tab yeh screen ke beech mein popup ki tarah dikhta hai. -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" id="modalPanel">
+    <button class="modal-close" id="modalCloseBtn" aria-label="Close details">✕</button>
+    <span class="admit-stamp">ADMIT ONE</span>
+    <h2 id="modalTitle"></h2>
+    <p class="modal-city" id="modalCity"></p>
+    <div class="modal-grid" id="modalGrid"></div>
+    <p class="desc" id="modalDesc"></p>
+    <div class="modal-actions">
+      <button class="btn btn-gold" id="modalReserveBtn" style="background:var(--stamp);color:#fff;">Reserve this venue</button>
+      <button class="btn btn-outline" style="color:var(--slate);border-color:var(--line);" id="modalPlanBtn">Plan event here</button>
+    </div>
+    <div class="confirm-msg" id="modalConfirm"></div>
+  </div>
+</div>
+
+<!-- Poora behaviour/logic is external file mein hai - is file ka
+     har function upar diye gaye id="..." elements ko dhoond kar
+     unpar kaam karta hai -->
+<script src="script.js"></script>
+
+
+</body>
+</html>
